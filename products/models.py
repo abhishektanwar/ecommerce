@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.db.models.signals import post_save
+from django.utils.text import slugify
 # Create your models here.
 
 # if a product is in inactive ,we dont want to show it in the product list
@@ -44,5 +45,32 @@ class Variation(models.Model):
             return self.sale_price
         else:
             return self.price
+#creating a default variation when a new product is created
+def product_post_saved_receiver(sender,instance,created,**kwargs):
+    # print(instance)
+    product = instance
+    variation = product.variation_set.all()
+    if variation.count() == 0:
+        new_variation = Variation()
+        new_variation.product = product
+        new_variation.title = "Default"
+        new_variation.price = product.price
+        new_variation.save()
+post_save.connect(product_post_saved_receiver,sender=Product)
 
-        
+def image_upload_to(instance, filename):
+#instance is the title of product to which image being uploaded is linked to
+    # print(instance)
+    title = instance.product.title
+    slug = slugify(title)
+    # the name of the file(img) being uploaded can also be changed
+    basename , extension = filename.split(".")
+    new_filename = "%s-%s.%s"%(slug,instance.id,extension)#instance.id is id of product being referred to
+    return "products/%s/%s" %(slug,filename)
+
+class ProductImage(models.Model):
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=image_upload_to)
+
+    def __str__(self):
+        return self.product.title

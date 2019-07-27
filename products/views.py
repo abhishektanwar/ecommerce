@@ -36,6 +36,6 @@ def pro(request,id):
     except:
         raise Http404
     context ={
-        "product":instance
+        "object":instance
     }
     return render(request,"products/detail.html",context)

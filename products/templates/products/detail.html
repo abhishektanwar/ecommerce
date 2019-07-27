@@ -10,13 +10,40 @@
 </head>
 <body>
     {% block content %}
-        {{ product.title }}
-        <select class="form-control">
-        {% for product_variation in product.variation_set.all %}
-            <option value="product_variation.id">{{ product_variation.title }}</option>
-        {% endfor %}
-            
-        </select>
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>{{ object.title }}</h2>
+                {% if object.productimage_set.count > 0 %}
+                <div>
+                    {% for img in object.productimage_set.all %}
+                    {{ img.image }}
+                    <img src="{{ img.image.url }}" class="img-responsive" alt="" />
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <p class="lead"> 
+                    {{ object.description }}           
+                </p>          
+            </div>
+            <div class="col-sm-4">
+                {% if object.variation_set.count > 1 %}
+                    {{ object.price }} 
+                    
+                <select class="form-control">
+                {% for object_variation in product.variation_set.all %}
+                    <option value="object_variation.id">{{ object_variation.title }}</option>
+                {% endfor %}
+                    
+                </select>
+                {% endif %}
+                <br>
+                <a href="">Add to cart</a>
+                <hr>
+                <h4>Related Products</h4>
+            </div>
+
+        </div>
+        
         
     {% endblock %}
     
