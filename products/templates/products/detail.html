@@ -71,7 +71,7 @@
                                         <img src="{{ products.get_image_url }}" class="img-responsive" alt="" /></a>
                                     {% endif %}                            
                                     <h4><a href="{% url 'prod-detailclass' pk=products.id  %}">{{ products.title }}</a><br></h4>
-                                    
+                                    {{ products.variation_set.first.get_price }}
                             </div>
                         </div>
                             {% cycle '' '</div><hr><div class="row">' %}

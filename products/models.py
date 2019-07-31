@@ -69,6 +69,14 @@ class Variation(models.Model):
         else:
             return self.price
 
+    def get_detail_price(self):
+        pr = self.sale_price
+        if pr is not None:
+            return pr
+        else:
+            pr = self.price
+            return pr
+                
 
 #creating a default variation when a new product is created
 def product_post_saved_receiver(sender,instance,created,**kwargs):
