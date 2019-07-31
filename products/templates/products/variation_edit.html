@@ -1,0 +1,17 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+    {% for item in qs %}
+        <table class="table">
+            <tr>
+                <td><a href="{% url 'edit-variation' pk=item.id  %}">{{ item.title }}</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+    
+    {{ now }}
+    
+
+{% endblock %}
+
+{{ user }}

@@ -1,0 +1,28 @@
+{% extends 'products/base.html' %}
+
+
+
+{% block content %}
+    <h3>{{ object }}</h3>
+    <div class="row">
+            {% for item in products %}
+            
+                <div class="col-xs-4">
+                    <div class="thumbnail">
+                            {% if item.get_image_url %}
+                            <a href="{% url 'prod-detailclass' pk=item.id  %}">
+                                <img src="{{ item.get_image_url }}" class="img-responsive" alt="" /></a>
+                            {% endif %}
+                        <div class="caption">
+                            <h3><a href="{% url 'prod-detailclass' pk=item.id  %}">{{ item.title }}</a><br></h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '</div><hr><div class="row">' %}
+           
+            
+            {% endfor %}
+        </div>
+   
+{% endblock %}

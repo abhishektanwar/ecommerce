@@ -1,0 +1,16 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+
+    {% for item in object_list %}
+        <table class="table">
+            <tr>
+                <td><a href="{% url 'category-detail' slug=item.slug  %}">{{ item.title }}</a></td>
+            </tr>
+        </table>
+    {% endfor %}
+    {{ now }}
+{% endblock %}
+
+
+{{ user }}

@@ -1,0 +1,15 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+    <h1>hi i am edit inventory page</h1>
+    {{product_pk}}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <!-- {% for item in form %}
+            {{ item.as_p }}
+        {% endfor %} -->
+        {{ form.as_p }}
+        <input type="submit" value="update" class="btn" name="" id="">
+    </form>
+{% endblock %}

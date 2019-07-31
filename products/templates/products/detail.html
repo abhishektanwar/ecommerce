@@ -9,6 +9,24 @@
     <title>Document</title>
 </head>
 <body>
+
+    {% block jquery %}
+        var price = $(".variation_select option:selected").attr("data-price")
+        $("#price").text(price)
+        $(".variation_select").change(function(){
+            var price = $(".variation_select option:selected").attr("data-price")
+            $("#price").text(price)
+            var sale_price = $(".variation_select option:selected").attr("data-sale-price")
+            if (sale_price != "" && sale_price != "None" && sale_price !="null" ){
+                $("#price").html("<h3>"+ sale_price + " " +"<small style='text-decoration:line-through;'>"+ price +"</small> </h3>");
+            }else{
+                $("#price").html(price)
+            }
+        })
+       
+       
+    {% endblock %}
+
     {% block content %}
         <div class="row">
             <div class="col-sm-8">
@@ -27,11 +45,12 @@
             </div>
             <div class="col-sm-4">
                 {% if object.variation_set.count > 1 %}
-                    {{ object.price }} 
+                    <h3 id="price">{{ object.price }} </h3>
                     
-                <select class="form-control">
+                    
+                <select class="form-control variation_select">
                 {% for object_variation in product.variation_set.all %}
-                    <option value="object_variation.id">{{ object_variation.title }}</option>
+                    <option data-sale-price="{{ object_variation.sale_price }}" data-price="{{ object_variation.price }}" value="object_variation.id">{{ object_variation.title }}</option>
                 {% endfor %}
                     
                 </select>
@@ -39,7 +58,29 @@
                 <br>
                 <a href="">Add to cart</a>
                 <hr>
+                <p>Share</p><br>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ build_absolute_uri }}" target="_blank">Share to Facebook</a>
+
                 <h4>Related Products</h4>
+                <div class="row">
+                    {% for products in related %}
+                        <div class="col-xs-6">
+                            <div class="thumbnail">
+                                    {% if products.get_image_url %}
+                                    <a href="{% url 'prod-detailclass' pk=products.id  %}">
+                                        <img src="{{ products.get_image_url }}" class="img-responsive" alt="" /></a>
+                                    {% endif %}                            
+                                    <h4><a href="{% url 'prod-detailclass' pk=products.id  %}">{{ products.title }}</a><br></h4>
+                                    
+                            </div>
+                        </div>
+                            {% cycle '' '</div><hr><div class="row">' %}
+                            
+                    {% endfor %}
+    
+                </div>
+                
+
             </div>
 
         </div>
